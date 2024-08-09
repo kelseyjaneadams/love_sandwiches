@@ -13,7 +13,6 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
-
 def get_sales_data():
     """
     Get sales figures input from the user.
@@ -35,9 +34,6 @@ def get_sales_data():
             break
 
     return sales_data
-
-
-
 
 def validate_data(values):
     """
@@ -74,7 +70,6 @@ def validate_data(values):
 #     surplus_worksheet = SHEET.worksheet("surplus")
 #     surplus_worksheet.append_row(data)
 #     print("Surplus worksheet updated successfully.\n")
- 2ade
 
 def update_worksheet(data, worksheet):
     """
@@ -105,6 +100,21 @@ def calculate_surplus_data(sales_row):
 
     return surplus_data
 
+def get_last_5_entries_sales():
+    """
+    Collects columns of data from sales worksheet, collecting the 
+    last 5 entries for each sandwich and returns the data 
+    as a list.
+    """
+    sales = SHEET.worksheet("sales")
+
+    columns = []
+    for ind in range(1,7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    pprint(columns)
+
+    return columns
 
 def main():
     """
@@ -117,4 +127,6 @@ def main():
     update_worksheet(new_surplus_data, "surplus")
 
 print("Welcome to Love Sandwiches Data Automation")
-main()
+# main()
+
+sales_columns = get_last_5_entries_sales()
